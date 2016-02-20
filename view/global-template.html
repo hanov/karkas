@@ -1,0 +1,36 @@
+<html>
+	<head>
+		<META charset="utf-8" />
+		<title><?=$title?></title>
+		<link href="/css/reset.css" type="text/css" rel="stylesheet">
+		<link href="/css/cols.css" type="text/css" rel="stylesheet">
+		<link href="/css/fonts.css" type="text/css" rel="stylesheet">
+		<link href="/css/layout.css" type="text/css" rel="stylesheet">
+		
+		<? if($css)foreach ($css as $one_css) 
+		{
+			?>
+			<link href="<?=$one_css?>" type="text/css" rel="stylesheet">
+			<?
+		}
+		?>
+
+		<script src="/js/jquery.js"></script>
+
+		<? if($js)foreach ($js as $one_js)
+		{
+			?>
+			<script src="<?=$one_js?>"></script>
+			<?
+		}
+		?>
+	</head>
+
+	<body>
+
+		<div class="layout">
+			<?=$body?>
+		</div>
+
+	</body>
+</html>

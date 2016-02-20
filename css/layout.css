@@ -1,0 +1,36 @@
+html,
+body {
+  height: 100%;
+}
+body {
+  background-color: white;
+  font-family: 'Helvetica Neue';
+}
+a {
+  color: #000000;
+  cursor:pointer;
+}
+a:hover {
+  color: #fe792f;
+}
+h1 {
+  position: relative;
+  left: 40px;
+  font-size: 360%;
+  margin-bottom: 25px;
+}
+
+.map-bubble
+{
+	font-size:160%;
+}
+.input-shadow {
+  box-shadow: inset 1px 1px 2px 1px #666666;
+}
+.layout {
+  //width: 1020px;
+  margin: 33px auto;
+  background-color: #ffffff;
+  position: relative;
+  font-size: 140%;
+}
