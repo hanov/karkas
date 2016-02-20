@@ -2,9 +2,9 @@
 error_reporting(0);
 session_start();
 
-define(DB_USER, 'root');
-define(DB_PASS, 'c2h5oh');
-define(DB_BASE, 'test');
+define(DB_USER, 'user');
+define(DB_PASS, 'pass');
+define(DB_BASE, 'dbase');
 
 // мин.набор. фунц. БД и шаблонов
 require_once('core/fns-min.php');
