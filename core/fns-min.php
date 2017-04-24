@@ -5,9 +5,30 @@ function __autoload($class_name) {
     include 'model/'.strtolower($class_name) . '.php';
 }
 
+// mysql link
+$link;
+
 // подкл. к БД
 function conn()
 {
+    global $link;
+    
+    $link = mysqli_connect("127.0.0.1", DB_USER, DB_PASS, DB_BASE);
+    if($link)
+    {
+        mysqli_query ($link,"set character_set_client='utf8'");
+        mysqli_query ($link,"set character_set_results='utf8'");
+        mysqli_query ($link,"set collation_connection='utf8_general_ci'");
+    }
+    
+    if(mysqli_connect_errno()) 
+    {
+        printf("Mysql error: no connetion %s\n", mysqli_connect_error());
+        exit();
+    }
+    
+    
+    /*
 	if(@$db = mysql_connect("127.0.0.1", DB_USER, DB_PASS))
 	{
 		mysql_query ("set character_set_client='utf8'");
@@ -23,23 +44,32 @@ function conn()
 	{
 		die("Помилка з'єднання з базою данних - неможливо обрати потрібну БД - база не існує");
 	}
-	return $db;
+	return $db;*/
 }
 
 // выполнить SQL запрос без возврата результата
 function query($query)
 {
-	$result = mysql_query($query, conn()) or die(" $query <hr>Mysql query error: ".mysql_error()." \n");
-	return $result;
+    global $link;
+    
+    conn();
+         
+    $result = mysqli_query($link, $query);
+        
+    if(!$result)
+    {
+        die(" $query <hr>Mysql query error: ".mysqli_error($link)." \n");
+    }
+    
+    return $result;
 }
 
-// выпольнить запрос и вернуть все в массиве
 function q_array($query)
 {
 	$r = query($query);
-	for($i=mysql_numrows($r); $i>0; $i--)
+	for($i=mysqli_num_rows($r); $i>0; $i--)
 	{
-		$f=mysql_fetch_array($r);
+		$f=mysqli_fetch_array($r, MYSQLI_ASSOC);
 		$result[] = $f;
 	}
 	if(!$result)
@@ -50,10 +80,9 @@ function q_array($query)
 	return $result;
 }
 
-// выполнить запрос и вернуть только один элемент массива
 function row($query)
 {
-	return mysql_fetch_array(query($query));
+	return mysqli_fetch_array(query($query));
 }
 
 // грузим темплейт
