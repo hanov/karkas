@@ -1,11 +1,11 @@
 <?php
 
 // если че, то грузим модель
-function __autoload($class_name) {
+spl_autoload_register(function ($class_name) {
     include 'model/'.strtolower($class_name) . '.php';
-}
+});
 
-// mysql link
+// sqlite link
 $link;
 
 // подкл. к БД
@@ -13,17 +13,16 @@ function conn()
 {
     global $link;
     
-    $link = mysqli_connect("127.0.0.1", DB_USER, DB_PASS, DB_BASE);
+    $link = new SQLite3(DB_PATH);
     if($link)
     {
-        mysqli_query ($link,"set character_set_client='utf8'");
-        mysqli_query ($link,"set character_set_results='utf8'");
-        mysqli_query ($link,"set collation_connection='utf8_general_ci'");
+        $link->exec('PRAGMA encoding = "UTF-8"');
+        $link->exec('PRAGMA foreign_keys = ON');
     }
     
-    if(mysqli_connect_errno()) 
+    if(!$link) 
     {
-        printf("Mysql error: no connetion %s\n", mysqli_connect_error());
+        printf("SQLite error: no connection\n");
         exit();
     }
     
@@ -54,11 +53,11 @@ function query($query)
     
     conn();
          
-    $result = mysqli_query($link, $query);
+    $result = $link->exec($query);
         
-    if(!$result)
+    if($result === false)
     {
-        die(" $query <hr>Mysql query error: ".mysqli_error($link)." \n");
+        die(" $query <hr>SQLite query error: ".$link->lastErrorMsg()." \n");
     }
     
     return $result;
@@ -66,23 +65,40 @@ function query($query)
 
 function q_array($query)
 {
-	$r = query($query);
-	for($i=mysqli_num_rows($r); $i>0; $i--)
-	{
-		$f=mysqli_fetch_array($r, MYSQLI_ASSOC);
-		$result[] = $f;
-	}
-	if(!$result)
-	{
-		return array();
-	}
-	
-	return $result;
+    global $link;
+    
+    conn();
+    
+    $result = array();
+    $r = $link->query($query);
+    
+    if($r === false)
+    {
+        die(" $query <hr>SQLite query error: ".$link->lastErrorMsg()." \n");
+    }
+    
+    while($row = $r->fetchArray(SQLITE3_ASSOC))
+    {
+        $result[] = $row;
+    }
+    
+    return $result;
 }
 
 function row($query)
 {
-	return mysqli_fetch_array(query($query));
+    global $link;
+    
+    conn();
+    
+    $r = $link->query($query);
+    
+    if($r === false)
+    {
+        die(" $query <hr>SQLite query error: ".$link->lastErrorMsg()." \n");
+    }
+    
+    return $r->fetchArray(SQLITE3_ASSOC);
 }
 
 // грузим темплейт
@@ -218,7 +234,6 @@ function is_mobile()
 function memc($key, $data)
 {
     return false;
-    continue;
 
     if(class_exists('Memcache'))
     {
@@ -364,7 +379,7 @@ function safe_db_input($array)
 		}
 		else 
 		{
-			$array[$key] = mysql_escape_string($val);
+			$array[$key] = SQLite3::escapeString($val);
 		}
 	}
 	return $array;

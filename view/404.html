@@ -1,1 +1,96 @@
-<h1>Страница не найдена</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: white;
+            color: black;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 600px;
+            padding: 2rem;
+        }
+
+        .error-code {
+            font-size: 8rem;
+            font-weight: bold;
+            color: black;
+            margin: 0 0 2rem 0;
+            line-height: 1;
+        }
+
+        .error-title {
+            font-size: 2.5rem;
+            margin: 0 0 1.5rem 0;
+            color: black;
+            font-weight: normal;
+            line-height: 1.2;
+            left: 0px !important;
+        }
+
+        .error-message {
+            font-size: 1.2rem;
+            margin: 0 auto 2rem auto;
+            color: black;
+            line-height: 1.5;
+        }
+
+        .home-button {
+            display: inline-block;
+            padding: 12px 30px;
+            background: black;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .home-button:hover {
+            background: #333;
+        }
+
+        @media (max-width: 768px) {
+            .error-code {
+                font-size: 6rem;
+                margin: 0 0 2rem 0;
+            }
+            .error-title {
+                font-size: 2rem;
+                margin: 0 0 1rem 0;
+            }
+            .error-message {
+                font-size: 1.1rem;
+                margin: 0 auto 1.5rem auto;
+            }
+            .container {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="error-code">404</div>
+        <h1 class="error-title">Page Not Found</h1>
+        <p class="error-message">The page you're looking for doesn't exist.</p>
+        <a href="/" class="home-button">Go Home</a>
+    </div>
+</body>
+</html>

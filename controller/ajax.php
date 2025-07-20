@@ -1,4 +1,4 @@
-<?
+<?php
 // прикол этого класса в том, что стоит написать метод 'function vtoroi_primer(){}'
 // как сразу можно вызвать по адресу http://karkas.dev/ajax/vtoroi_primer
 // и не трахаться с роутерами и обработками параметров.
@@ -13,9 +13,9 @@ class Controller
 		$method = next(explode('/', $_GET['route']));
 
 		// если метод есть, то просто его вызываем
-		if(method_exists(Controller, $method))
+		if(method_exists($this, $method))
 		{
-			call_user_func(array(Controller, $method));
+			call_user_func(array($this, $method));
 		}
 	}
 
